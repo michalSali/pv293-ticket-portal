@@ -7,63 +7,52 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using TicketPortalArchitecture.Application.Common.Behaviours;
-using TicketPortalArchitecture.Application.Common.Interfaces;
-using TicketPortalArchitecture.Application.Infrastructure.Files;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
-using TicketPortalArchitecture.Application.Infrastructure.Services;
+using Microsoft.Extensions.Options;
+using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking;
 
 public static class DependencyInjection
 {
 
-    public static IServiceCollection AddTicketBookingServices(this IServiceCollection services)
+    public static IServiceCollection AddTicketBookingServices(this IServiceCollection services, IConfiguration configuration)
     {
-
-    }
-
-    public static IServiceCollection AddApplication(this IServiceCollection services)
-    {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        services.AddTicketBookingInfrastructure(configuration);
 
         return services;
     }
 
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddTicketBookingInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("TicketPortalDb"));
-        }
-        else
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        }
+        var configurationBuilder = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .Build();
 
-        services.AddScoped<IDomainEventService, DomainEventService>();
+        var connectionString = configurationBuilder["POSTGRES_MASTER_CONN"];
 
-        services.AddTransient<IDateTime, DateTimeService>();
-        services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
+        connectionString = "Host=localhost;Port=5432;Database=ticketportal-master;Username=postgres;Password=password";
+        connectionString = "Host=host.docker.internal;Port=5432;Database=ticketportal-master;Username=postgres;Password=password";
+        connectionString = "Host=sali-intra-test-db.postgres.database.azure.com;Port=5432;Database=ticketportal;Username=ticketportal_user;Password=password";
+        //connectionString = "Host=localhost;Port=5432;Database=ticketportal-master;Username=test;Password=password";
 
-        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddDbContext<TicketBookingDbContext>(options =>
+            //options.UseNpgsql(connectionString));
+            options.UseInMemoryDatabase("TicketPortalDb"));
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddRoleManager<RoleManager<IdentityRole>>()
-                .AddDefaultUI()
-                .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<ApplicationContext>();
+        // TODO: add redis cache
+
+        //if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+        //{
+        //    services.AddDbContext<ApplicationDbContext>(options =>
+        //        options.UseInMemoryDatabase("TicketPortalDb"));
+        //}
+        //else
+        //{
+        //    services.AddDbContext<ApplicationDbContext>(options =>
+        //        options.UseSqlServer(
+        //            configuration.GetConnectionString("DefaultConnection"),
+        //            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        //}
 
         return services;
     }

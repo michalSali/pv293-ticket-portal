@@ -3,8 +3,7 @@ using TicketBooking.Core.EventAggregate;
 
 namespace TicketBooking.UseCases.Events.Get
 {
-    public class GetEventQuery : IRequest<Event>
+    public class GetAllEventsQuery : IRequest<List<Event>>
     {
-        public int EventId { get; set; }
     }
 }

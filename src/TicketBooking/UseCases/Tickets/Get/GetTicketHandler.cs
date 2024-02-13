@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
+using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking.UseCases.Tickets.Get
 {

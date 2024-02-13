@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UserManagement.Core.UserAggregate
 {
-    public class ApplicationUser : IdentityUser, IHasDomainEvent
+    public class User : IdentityUser, IHasDomainEvent
     {
         public virtual string? Firstname { get; set; }
         public virtual string? Lastname { get; set; }

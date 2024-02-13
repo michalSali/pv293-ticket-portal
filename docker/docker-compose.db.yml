@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres-master:
+    image: postgres
+    container_name: ticket-portal-postgres-master
+    environment:
+      POSTGRES_DB: ticketportal-master
+      #POSTGRES_USER: ${POSTGRES_MASTER_USER}
+      #POSTGRES_PASSWORD: ${POSTGRES_MASTER_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    volumes:
+      - ticket-portal-postgres-master-conf:/etc/postgresql
+      - ticket-portal-postgres-master-data:/var/lib/postgresql
+
+  #postgres-slave:
+  #  image: postgres
+  #  container_name: ticket-portal-postgres-slave
+  #  environment:
+  #    POSTGRES_DB: ticketportal-slave
+  #    POSTGRES_USER: ${POSTGRES_SLAVE_USER}
+  #    POSTGRES_PASSWORD: ${POSTGRES_SLAVE_PASSWORD}
+  #  ports:
+  #    - "5433:5432"
+  #  volumes:
+  #    - ticket-portal-postgres-slave-conf:/etc/postgresql
+  #    - ticket-portal-postgres-slave-data:/var/lib/postgresql/data
+  #  command: ["bash", "-c", "while ! pg_isready -h postgres-master -p 5432; do sleep 1; done; pg_basebackup -h postgres-master -D /var/lib/postgresql/data/pgdata -U myuser -vP --wal-method=stream"]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+
+#volumes:
+#  ticket-portal-postgres-master-conf:
+#  ticket-portal-postgres-master-data:

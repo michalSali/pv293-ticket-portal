@@ -14,15 +14,19 @@ namespace TicketBooking.Web.Controllers
 {
     public class TicketsController : ApiControllerBase
     {
-        [HttpPost("/api/tickets")]
+        [HttpPost]
         public async Task<ActionResult<Ticket>> AddTicketToCart(AddTicketToCartCommand command)
         {
             return await Mediator.Send(command);
         }
 
-        [HttpDelete("/api/tickets")]
-        public async Task<ActionResult<Ticket>> RemoveTicketFromCart(RemoveTicketFromCartCommand command)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Ticket>> RemoveTicketFromCart(int id)
         {
+            var command = new RemoveTicketFromCartCommand
+            {
+                TicketId = id
+            };
             return await Mediator.Send(command);
         }
     }

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SharedKernel.Models;
 using TicketBooking.Core.CartAggregate.Events;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
+using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking.Core.CartAggregate.Handlers;
 

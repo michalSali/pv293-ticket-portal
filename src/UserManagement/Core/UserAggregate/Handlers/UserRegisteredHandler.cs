@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using SharedKernel.CrossBoundaryEvents;
 using SharedKernel.Models;
 using UserManagement.Core.UserAggregate.Events;
+using UserManagement.Infrastructure.Data;
 
 namespace UserManagement.Core.UserAggregate.Handlers;
 

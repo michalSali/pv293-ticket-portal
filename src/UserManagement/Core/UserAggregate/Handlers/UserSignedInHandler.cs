@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SharedKernel.Models;
 using UserManagement.Core.UserAggregate.Events;
+using UserManagement.Infrastructure.Data;
 
 namespace UserManagement.Core.UserAggregate.Handlers;
 

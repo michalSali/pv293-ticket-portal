@@ -8,7 +8,6 @@ using SharedKernel.Interfaces;
 using UserManagement;
 using UserManagement.Core.UserAggregate;
 using UserManagement.Core.UserAggregate.Events;
-using TicketPortalArchitecture.Application.Infrastructure.Services;
 
 namespace UserManagement.UseCases.Users.LogOut
 {

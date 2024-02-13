@@ -8,32 +8,30 @@ using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Core.EventAggregate;
 
-namespace TicketPortalArchitecture.Application.Infrastructure.Persistence;
+namespace TicketBooking.Infrastructure.Data;
 
 public class TicketBookingDbContext : DbContext
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
     private readonly IDomainEventService _domainEventService;
 
     public TicketBookingDbContext(
         DbContextOptions<TicketBookingDbContext> options,
         ICurrentUserService currentUserService,
-        IDomainEventService domainEventService,
-        IDateTime dateTime) : base(options)
+        IDomainEventService domainEventService) : base(options)
     {
         _currentUserService = currentUserService;
         _domainEventService = domainEventService;
-        _dateTime = dateTime;
     }
 
-    public DbSet<Cart> Carts => Set<Cart>();
+    public DbSet<Cart> Carts { get; set; }
 
-    public DbSet<Ticket> Tickets => Set<Ticket>();
+    public DbSet<Ticket> Tickets { get; set; }
 
-    public DbSet<Event> Events => Set<Event>();
+    public DbSet<Event> Events { get; set; }
 
-    public DbSet<Seat> Seats => Set<Seat>();
+    public DbSet<Seat> Seats { get; set; }
+    public DbSet<SeatCategory> SeatCategories { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -43,11 +41,11 @@ public class TicketBookingDbContext : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedBy = _currentUserService.UserId;
-                    entry.Entity.Created = _dateTime.Now;
+                    entry.Entity.Created = DateTime.UtcNow;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                    entry.Entity.LastModified = _dateTime.Now;
+                    entry.Entity.LastModified = DateTime.UtcNow;
                     break;
                 case EntityState.Detached:
                     break;
@@ -78,6 +76,9 @@ public class TicketBookingDbContext : DbContext
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+
+        // Ignore the DomainEvent entity completely in the database
+        builder.Ignore<DomainEvent>();
     }
 
     private async Task DispatchEvents(DomainEvent[] events)

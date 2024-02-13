@@ -9,29 +9,26 @@ using SharedKernel;
 using SharedKernel.Interfaces;
 using UserManagement.Core.UserAggregate;
 
-namespace UserManagement;
+namespace UserManagement.Infrastructure.Data;
 
-public class UserManagementDbContext : ApiAuthorizationDbContext<ApplicationUser>
+public class UserManagementDbContext : ApiAuthorizationDbContext<User>
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
     private readonly IDomainEventService _domainEventService;
 
     public UserManagementDbContext(
-        DbContextOptions options,
+        DbContextOptions<UserManagementDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         ICurrentUserService currentUserService,
-        IDomainEventService domainEventService,
-        IDateTime dateTime) : base(options, operationalStoreOptions)
+        IDomainEventService domainEventService) : base(options, operationalStoreOptions)
     {
         _currentUserService = currentUserService;
         _domainEventService = domainEventService;
-        _dateTime = dateTime;
     }
 
-    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
+    public DbSet<User> ApplicationUsers { get; set; }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
         {
@@ -39,11 +36,11 @@ public class UserManagementDbContext : ApiAuthorizationDbContext<ApplicationUser
             {
                 case EntityState.Added:
                     entry.Entity.CreatedBy = _currentUserService.UserId;
-                    entry.Entity.Created = _dateTime.Now;
+                    entry.Entity.Created = DateTime.UtcNow;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                    entry.Entity.LastModified = _dateTime.Now;
+                    entry.Entity.LastModified = DateTime.UtcNow;
                     break;
                 case EntityState.Detached:
                     break;
@@ -74,6 +71,8 @@ public class UserManagementDbContext : ApiAuthorizationDbContext<ApplicationUser
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+
+        builder.Ignore<DomainEvent>();
     }
 
     private async Task DispatchEvents(DomainEvent[] events)

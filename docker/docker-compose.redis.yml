@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  redis-master:
+    image: redis
+    container_name: ticket-portal-redis-master
+    environment:
+      REDIS_PASSWORD: ${REDIS_MASTER_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - ticket-portal-redis-master-data:/data
+    command: redis-server --appendonly yes
+
+  redis-slave:
+    image: redis
+    container_name: ticket-portal-redis-slave
+    environment:
+      REDIS_PASSWORD: ${REDIS_SLAVE_PASSWORD}
+    ports:
+      - "6380:6379"
+    volumes:
+      - ticket-portal-redis-slave-data:/data
+    command: redis-server --appendonly yes --slaveof redis-master 6379

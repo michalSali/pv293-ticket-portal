@@ -5,7 +5,7 @@ using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Core.CartAggregate.Events;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
+using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking.UseCases.Tickets.AddTicketToCart
 {

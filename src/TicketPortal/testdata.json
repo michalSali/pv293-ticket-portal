@@ -1,0 +1,22 @@
+﻿[
+  {
+    "register-user": [
+      {
+        "email": "pv293_ticketportal_1@mailinator.com",
+        "password": "password"
+      }
+      ,
+      {
+        "email": "pv293_ticketportal_1@mailinator.com",
+        "password": "password",
+        "rememberMe": true
+      }
+      ,
+      {
+        "email": "485342_user1@mailinator.com",
+        "password": "Heslo.1",
+        "rememberMe": true
+      }
+    ]
+  }
+]

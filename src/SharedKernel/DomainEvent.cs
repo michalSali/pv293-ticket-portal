@@ -1,7 +1,10 @@
-﻿namespace SharedKernel;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SharedKernel;
 
 public interface IHasDomainEvent
 {
+    [NotMapped]
     public List<DomainEvent> DomainEvents { get; }
 }
 

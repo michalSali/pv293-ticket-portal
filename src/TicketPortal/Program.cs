@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SharedKernel;
+using TicketBooking;
+using TicketPortal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,17 +19,18 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(
 
 // Register the Swagger generator, defining 1 or more Swagger documents
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "VSA Todo API", Version = "v1" }));
+builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "TicketPortal API", Version = "v1" }));
 
 builder.Services.AddProblemDetails();
 
-builder.Services.AddSharedKernelServices();
-builder.Services.AddSharedKernelInfrastructure(builder.Configuration);
+builder.Services.AddTicketPortalServices(builder.Configuration);
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+
+SeedData.Initialize(app);
 
 // Enable middleware to serve generated Swagger as a JSON endpoint.
 app.UseSwagger();
@@ -55,5 +59,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
 public partial class Program { }

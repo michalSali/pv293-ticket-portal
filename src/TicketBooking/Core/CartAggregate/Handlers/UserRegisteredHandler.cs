@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using SharedKernel.CrossBoundaryEvents;
 using SharedKernel.Models;
 using TicketBooking.Core.CartAggregate.Events;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
+using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking.Core.CartAggregate.Handlers;
 
-public class UserCreatedEventHandler : INotificationHandler<DomainEventNotification<UserCreatedEvent>>
+public class UserCreatedEventHandler : INotificationHandler<DomainEventNotification<UserRegisteredEvent>>
 {
     private readonly ILogger<UserCreatedEventHandler> _logger;
     private readonly TicketBookingDbContext _context;
@@ -17,7 +18,7 @@ public class UserCreatedEventHandler : INotificationHandler<DomainEventNotificat
         _context = context;
     }
 
-    public async Task Handle(DomainEventNotification<UserCreatedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<UserRegisteredEvent> notification, CancellationToken cancellationToken)
     {
         var domainEvent = notification.DomainEvent;
 

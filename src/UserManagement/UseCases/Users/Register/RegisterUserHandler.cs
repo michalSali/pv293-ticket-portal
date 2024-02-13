@@ -2,21 +2,24 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.CrossBoundaryEvents;
 using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 using UserManagement;
 using UserManagement.Core.UserAggregate;
 using UserManagement.Core.UserAggregate.Events;
+using UserManagement.Infrastructure.Data;
+using UserManagement.Infrastructure.Services.Mailer;
 
 namespace UserManagement.UseCases.Users.Register
 {
     internal sealed class RegisterUserHandler : IRequestHandler<RegisterUserCommand, bool>
     {
         private readonly UserManagementDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IMailerService _mailerService;
 
-        public RegisterUserHandler(UserManagementDbContext context, UserManager<ApplicationUser> userManager, IMailerService mailerService)
+        public RegisterUserHandler(UserManagementDbContext context, UserManager<User> userManager, IMailerService mailerService)
         {
             _context = context;
             _userManager = userManager;
@@ -25,7 +28,7 @@ namespace UserManagement.UseCases.Users.Register
 
         public async Task<bool> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = new ApplicationUser { UserName = request.Email, Email = request.Email };
+            var user = new User { UserName = request.Email, Email = request.Email };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -35,8 +38,12 @@ namespace UserManagement.UseCases.Users.Register
                 Email = user.Email
             });
 
-            await _mailerService.SendEmailAsync(user.Email, "Welcome to TicketPortal",
+            await _context.SaveChangesAsync();
+
+            await _mailerService.SendEmailAsync(user.Email, null, "Welcome to TicketPortal",
                 "Thank you for choosing TicketPortal. You can book tickets from events all around the world.");
+
+            // TODO: need to create Cart for this user
 
             return result.Succeeded;
         }

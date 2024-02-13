@@ -33,4 +33,10 @@ public class UsersController : ApiControllerBase
     {
         return await Mediator.Send(new LogOutUserCommand());
     }
+
+    [HttpGet]
+    public async Task<List<User>> GetAllUsers()
+    {
+        return await Mediator.Send(new GetAllUsersQuery());
+    }
 }

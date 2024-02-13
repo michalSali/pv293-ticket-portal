@@ -13,7 +13,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagement", "src\Even
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "src\SharedKernel\SharedKernel.csproj", "{363C731C-0831-4631-8DFC-41469D715066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement", "src\UserManagement\UserManagement.csproj", "{84B3075B-9D96-46B9-B515-010D05191AD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "src\UserManagement\UserManagement.csproj", "{84B3075B-9D96-46B9-B515-010D05191AD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{6AFAD149-9834-4E2F-AAAA-B1691CF02EBE}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		.env.example = .env.example
+		docker-compose.db.yml = docker-compose.db.yml
+		docker-compose.redis.yml = docker-compose.redis.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6602318D-D2F2-4FB2-A72D-B08E27AA7F94}"
+	ProjectSection(SolutionItems) = preProject
+		architecture\architecture.md = architecture\architecture.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

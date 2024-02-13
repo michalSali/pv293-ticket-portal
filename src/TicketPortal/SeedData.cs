@@ -1,17 +1,33 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketBooking.Infrastructure.Data;
 using UserManagement;
 using UserManagement.Core.UserAggregate;
+using UserManagement.Infrastructure.Data;
+
+namespace TicketPortal;
 
 /// <summary>
 /// Provides initial values for lookup lists, for demo purposes.
 /// </summary>
 public static class SeedData
 {
+    public static void Initialize(WebApplication app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            // Seed data
+            TicketBookingDbContextSeed.Initialize(scope.ServiceProvider);
+            UserManagementDbContextSeed.Initialize(scope.ServiceProvider);
+        }
+    }
+
+
     /// <summary>
     /// Data seeding is performed before the main application logic begins execution.
     /// </summary>
@@ -21,7 +37,7 @@ public static class SeedData
         var context = serviceProvider.GetRequiredService<UserManagementDbContext>();
         context.Database.EnsureCreated();
 
-        var hasher = new PasswordHasher<ApplicationUser>();
+        var hasher = new PasswordHasher<User>();
 
         var userID1 = Guid.NewGuid().ToString();
         var userID2 = Guid.NewGuid().ToString();
@@ -40,10 +56,10 @@ public static class SeedData
             //context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID7, UserName = "485342_user7@mailinator.com", NormalizedUserName = "485342_USER7@MAILINATOR.COM", Email = "485342_user7@mailinator.com", NormalizedEmail = "485342_USER7@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Nina", Lastname = "Nerdy" });
             //context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID6, UserName = "485342_user6@mailinator.com", NormalizedUserName = "485342_USER6@MAILINATOR.COM", Email = "485342_user6@mailinator.com", NormalizedEmail = "485342_USER6@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Jill", Lastname = "Anderson" });
             //context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID5, UserName = "485342_user5@mailinator.com", NormalizedUserName = "485342_USER5@MAILINATOR.COM", Email = "485342_user5@mailinator.com", NormalizedEmail = "485342_USER5@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "David", Lastname = "Miller" });
-            context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID4, UserName = "485342_user4@mailinator.com", NormalizedUserName = "485342_USER4@MAILINATOR.COM", Email = "485342_user4@mailinator.com", NormalizedEmail = "485342_USER4@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "John", Lastname = "Fabrikam" });
-            context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID3, UserName = "485342_user3@mailinator.com", NormalizedUserName = "485342_USER3@MAILINATOR.COM", Email = "485342_user3@mailinator.com", NormalizedEmail = "485342_USER3@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Beth", Lastname = "Jeff" });
-            context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID2, UserName = "485342_user2@mailinator.com", NormalizedUserName = "485342_USER2@MAILINATOR.COM", Email = "485342_user2@mailinator.com", NormalizedEmail = "485342_USER2@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Bob", Lastname = "Doe" });
-            context.ApplicationUsers.Add(entity: new ApplicationUser() { Id = userID1, UserName = "485342_user1@mailinator.com", NormalizedUserName = "485342_USER1@MAILINATOR.COM", Email = "foo@mailina1or.com", NormalizedEmail = "485342_USER9@MAILINA1OR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Joe", Lastname = "Foo" });
+            context.ApplicationUsers.Add(entity: new User() { Id = userID4, UserName = "485342_user4@mailinator.com", NormalizedUserName = "485342_USER4@MAILINATOR.COM", Email = "485342_user4@mailinator.com", NormalizedEmail = "485342_USER4@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "John", Lastname = "Fabrikam" });
+            context.ApplicationUsers.Add(entity: new User() { Id = userID3, UserName = "485342_user3@mailinator.com", NormalizedUserName = "485342_USER3@MAILINATOR.COM", Email = "485342_user3@mailinator.com", NormalizedEmail = "485342_USER3@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Beth", Lastname = "Jeff" });
+            context.ApplicationUsers.Add(entity: new User() { Id = userID2, UserName = "485342_user2@mailinator.com", NormalizedUserName = "485342_USER2@MAILINATOR.COM", Email = "485342_user2@mailinator.com", NormalizedEmail = "485342_USER2@MAILINATOR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Bob", Lastname = "Doe" });
+            context.ApplicationUsers.Add(entity: new User() { Id = userID1, UserName = "485342_user1@mailinator.com", NormalizedUserName = "485342_USER1@MAILINATOR.COM", Email = "foo@mailina1or.com", NormalizedEmail = "485342_USER9@MAILINA1OR.COM", EmailConfirmed = true, PasswordHash = hasher.HashPassword(null, "Heslo.1"), SecurityStamp = string.Empty, PhoneNumberConfirmed = false, TwoFactorEnabled = false, LockoutEnabled = true, AccessFailedCount = 0, Firstname = "Joe", Lastname = "Foo" });
 
             context.SaveChanges();
         }

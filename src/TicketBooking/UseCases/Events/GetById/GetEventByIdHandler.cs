@@ -5,20 +5,20 @@ using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Core.EventAggregate;
-using TicketPortalArchitecture.Application.Infrastructure.Persistence;
+using TicketBooking.Infrastructure.Data;
 
-namespace TicketBooking.UseCases.Events.Get
+namespace TicketBooking.UseCases.Events.GetById
 {
-    internal sealed class GetEventHandler : IRequestHandler<GetEventQuery, Event>
+    internal sealed class GetEventByIdHandler : IRequestHandler<GetEventByIdQuery, Event>
     {
         private readonly TicketBookingDbContext _context;
 
-        public GetEventHandler(TicketBookingDbContext context)
+        public GetEventByIdHandler(TicketBookingDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Event> Handle(GetEventQuery request, CancellationToken cancellationToken)
+        public async Task<Event> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
         {
             var _event = await _context.Events
                 .Where(x => x.Id == request.EventId)

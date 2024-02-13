@@ -11,18 +11,15 @@ namespace SharedKernel;
 public class DomainEventDbContext<T> : DbContext where T : DbContext
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
     private readonly IDomainEventService _domainEventService;
 
     public DomainEventDbContext(
         DbContextOptions<T> options,
         ICurrentUserService currentUserService,
-        IDomainEventService domainEventService,
-        IDateTime dateTime) : base(options)
+        IDomainEventService domainEventService) : base(options)
     {
         _currentUserService = currentUserService;
         _domainEventService = domainEventService;
-        _dateTime = dateTime;
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -33,11 +30,11 @@ public class DomainEventDbContext<T> : DbContext where T : DbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedBy = _currentUserService.UserId;
-                    entry.Entity.Created = _dateTime.Now;
+                    entry.Entity.Created = DateTime.UtcNow;
                     break;
                 case EntityState.Modified:
                     entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                    entry.Entity.LastModified = _dateTime.Now;
+                    entry.Entity.LastModified = DateTime.UtcNow;
                     break;
                 case EntityState.Detached:
                     break;
