@@ -19,12 +19,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{6AFAD1
 		.env.example = .env.example
 		docker-compose.db.yml = docker-compose.db.yml
 		docker-compose.redis.yml = docker-compose.redis.yml
+		run_app.sh = run_app.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6602318D-D2F2-4FB2-A72D-B08E27AA7F94}"
 	ProjectSection(SolutionItems) = preProject
-		architecture\architecture.md = architecture\architecture.md
 		tests\k6\happy_path_test.js = tests\k6\happy_path_test.js
+		infrastructure\infrastructure.md = infrastructure\infrastructure.md
 		README.md = README.md
 	EndProjectSection
 EndProject

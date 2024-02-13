@@ -83,9 +83,6 @@ public class DomainEventDbContext<T> : DbContext where T : DbContext
 
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        eventLogs = await EventLogs.ToListAsync();
-
-
         await DispatchEvents(events);
 
         return result;

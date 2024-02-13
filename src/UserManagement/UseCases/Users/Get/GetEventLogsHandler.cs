@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 using SharedKernel.Queries;
+using UserManagement.Core.UserAggregate;
 using UserManagement.Infrastructure.Data;
 
 namespace UserManagement.UseCases.Users.Get
 {
-    internal sealed class GetEventLogsHandler : IRequestHandler<GetEventLogsQuery, List<DomainEventLog>>
+    internal sealed class GetEventLogsHandler : IRequestHandler<GetUserEventLogsQuery, List<UserEventLog>>
     {
         private readonly UserManagementDbContext _context;
 
@@ -15,9 +16,9 @@ namespace UserManagement.UseCases.Users.Get
             _context = context;
         }
 
-        public async Task<List<DomainEventLog>> Handle(GetEventLogsQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserEventLog>> Handle(GetUserEventLogsQuery request, CancellationToken cancellationToken)
         {
-            var eventLogs = await _context.EventLogs.ToListAsync();
+            var eventLogs = await _context.UserEventLogs.ToListAsync();
             return eventLogs;
         }
     }

@@ -21,6 +21,7 @@ namespace TicketBooking.UseCases.Carts.Get
 
         public async Task<List<Cart>> Handle(GetAllCartsQuery request, CancellationToken cancellationToken)
         {
+            // include tickets
             var carts = await _context.Carts.ToListAsync();
             return carts;
         }

@@ -39,9 +39,13 @@ namespace TicketBooking.Web.Controllers
         }
 
         [HttpPost("{id}/seat-layout")]
-        public async Task<ActionResult<List<Seat>>> CreateEventSeatLayout(int id, CreateSeatLayoutCommand command)
+        public async Task<ActionResult<List<Seat>>> CreateEventSeatLayout(int id, List<SeatDto> seats)
         {
-            command.EventId = id;
+            var command = new CreateSeatLayoutCommand
+            {
+                EventId = id,
+                Seats = seats
+            };
             return await Mediator.Send(command);
         }
 

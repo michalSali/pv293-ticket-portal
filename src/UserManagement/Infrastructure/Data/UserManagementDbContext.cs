@@ -28,7 +28,7 @@ public class UserManagementDbContext : ApiAuthorizationDbContext<User>
     }
 
     public DbSet<User> ApplicationUsers { get; set; }
-    public DbSet<DomainEventLog> EventLogs { get; set; }
+    public DbSet<UserEventLog> UserEventLogs { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -72,7 +72,7 @@ public class UserManagementDbContext : ApiAuthorizationDbContext<User>
             foreach (var entry in entity.DomainEvents.Where(x => !x.IsPublished))
             {
                 // StreamVersion is auto-increment
-                EventLogs.Add(new DomainEventLog
+                UserEventLogs.Add(new UserEventLog
                 {
                     StreamId = entity.GetType().Name.ToString(), // entity name
                     StreamVersion = 1,  // should be auto-increment
@@ -83,11 +83,7 @@ public class UserManagementDbContext : ApiAuthorizationDbContext<User>
             }
         }
 
-        var eventLogs = await EventLogs.ToListAsync();
-
         var result = await base.SaveChangesAsync(cancellationToken);
-
-        eventLogs = await EventLogs.ToListAsync();
 
         await DispatchEvents(events);
 

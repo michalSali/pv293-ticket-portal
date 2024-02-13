@@ -64,6 +64,7 @@ namespace TicketBooking.UseCases.Tickets.AddTicketToCart
             {
                 EventId = request.EventId,
                 CartId = cart.Id,
+                SeatId = request.SeatId,
             };
 
             _context.Tickets.Add(ticket);
