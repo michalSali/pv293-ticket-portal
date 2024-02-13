@@ -22,6 +22,12 @@ namespace TicketBooking.Web.Controllers
             return await Mediator.Send(new GetAllCartsQuery());
         }
 
+        [HttpGet("current-user")]
+        public async Task<ActionResult<Cart>> GetCurrentUserCart()
+        {
+            return await Mediator.Send(new GetCurrentUserCartQuery());
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Cart>> GetCartById(int id)
         {

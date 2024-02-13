@@ -27,13 +27,15 @@ namespace TicketBooking.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> GetEvent(int id)
         {
-            return await Mediator.Send(new GetEventByIdQuery() { EventId = id });
+            var result = await Mediator.Send(new GetEventByIdQuery() { EventId = id });
+            return result;
         }
 
         [HttpPost]
         public async Task<ActionResult<Event>> CreateEvent(CreateEventCommand command)
         {
-            return await Mediator.Send(command);
+            var _event = await Mediator.Send(command);
+            return CreatedAtAction(nameof(GetEvent), new {id = _event.Id}, _event);
         }
 
         [HttpPost("{id}/seat-layout")]

@@ -5,6 +5,7 @@ using SharedKernel.Exceptions;
 using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Core.EventAggregate;
+using TicketBooking.Core.EventAggregate.Events;
 using TicketBooking.Infrastructure.Data;
 
 namespace TicketBooking.UseCases.Events.Create
@@ -20,7 +21,6 @@ namespace TicketBooking.UseCases.Events.Create
 
         public async Task<Event> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            // could be added to AutoMapper, but only used in one place
             var _event = new Event
             {
                 Title = request.Title,
@@ -35,6 +35,12 @@ namespace TicketBooking.UseCases.Events.Create
                 TotalCapacity = request.TotalCapacity,
                 RemainingCapacity = request.RemainingCapacity,
             };
+
+            _context.Events.Add(_event);
+
+            _event.DomainEvents.Add(new EventCreatedEvent());
+
+            await _context.SaveChangesAsync();
 
             return _event;
         }

@@ -16,16 +16,31 @@ public class UsersController : ApiControllerBase
 {
     public UsersController() { }
 
-    [HttpPost("register")]
-    public async Task<bool> Register(RegisterUserCommand command)
+    [HttpPost("registration")]
+    public async Task<IActionResult> Register(RegisterUserCommand command)
     {
-        return await Mediator.Send(command);
+        var user = await Mediator.Send(command);
+
+        if (user == null)
+        {
+            return BadRequest("Registration wasn't succesful.");
+        }
+
+        // TODO: ideally return 201 CreatedAtAction() with created user's id
+        return Ok(user);
     }
 
     [HttpPost("sign-in")]
-    public async Task<bool> SignIn(SignInUserCommand command)
+    public async Task<IActionResult> SignIn(SignInUserCommand command)
     {
-        return await Mediator.Send(command);
+        var user = await Mediator.Send(command);
+
+        if (user == null)
+        {
+            return BadRequest("Registration wasn't succesful.");
+        }
+
+        return Ok(user);
     }
 
     [HttpPost("log-out")]

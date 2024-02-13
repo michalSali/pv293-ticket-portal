@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketBooking", "src\Ticket
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketPortal", "src\TicketPortal\TicketPortal.csproj", "{0A77B771-FD36-4DEB-8820-92D33C2A3B5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagement", "src\EventManagement\EventManagement.csproj", "{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "src\SharedKernel\SharedKernel.csproj", "{363C731C-0831-4631-8DFC-41469D715066}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "src\UserManagement\UserManagement.csproj", "{84B3075B-9D96-46B9-B515-010D05191AD8}"
@@ -26,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6602318D-D2F2-4FB2-A72D-B08E27AA7F94}"
 	ProjectSection(SolutionItems) = preProject
 		architecture\architecture.md = architecture\architecture.md
+		tests\k6\happy_path_test.js = tests\k6\happy_path_test.js
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -43,10 +42,6 @@ Global
 		{0A77B771-FD36-4DEB-8820-92D33C2A3B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A77B771-FD36-4DEB-8820-92D33C2A3B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A77B771-FD36-4DEB-8820-92D33C2A3B5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{363C731C-0831-4631-8DFC-41469D715066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{363C731C-0831-4631-8DFC-41469D715066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{363C731C-0831-4631-8DFC-41469D715066}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,7 +57,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0EF087EC-E9BA-440B-AB61-3B78B25509B5} = {FD719E95-CB2D-47C6-853E-FD230591EDA5}
 		{0A77B771-FD36-4DEB-8820-92D33C2A3B5C} = {FD719E95-CB2D-47C6-853E-FD230591EDA5}
-		{F1CC191E-F979-4A6A-AAC6-AD236ED51FDD} = {FD719E95-CB2D-47C6-853E-FD230591EDA5}
 		{363C731C-0831-4631-8DFC-41469D715066} = {FD719E95-CB2D-47C6-853E-FD230591EDA5}
 		{84B3075B-9D96-46B9-B515-010D05191AD8} = {FD719E95-CB2D-47C6-853E-FD230591EDA5}
 	EndGlobalSection

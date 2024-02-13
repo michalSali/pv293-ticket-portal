@@ -11,7 +11,7 @@ using UserManagement.Infrastructure.Data;
 
 namespace UserManagement.UseCases.Users.SignIn
 {
-    internal sealed class SignInUserHandler : IRequestHandler<SignInUserCommand, bool>
+    internal sealed class SignInUserHandler : IRequestHandler<SignInUserCommand, User?>
     {
         private readonly SignInManager<User> _signInManager;
         private readonly IDomainEventService _domainEventService;
@@ -31,13 +31,13 @@ namespace UserManagement.UseCases.Users.SignIn
             _context = context;
         }
 
-        public async Task<bool> Handle(SignInUserCommand request, CancellationToken cancellationToken)
+        public async Task<User?> Handle(SignInUserCommand request, CancellationToken cancellationToken)
         {
             var result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, request.RememberMe, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
-                return false;
+                return null;
             }
 
             var user = await _context.Users
@@ -55,7 +55,7 @@ namespace UserManagement.UseCases.Users.SignIn
                 UserId = user.Id
             });
 
-            return true;
+            return user;
         }
     }
 }

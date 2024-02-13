@@ -48,7 +48,11 @@ app.UseHttpsRedirection();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/error-development");
+    app.UseExceptionHandler(new ExceptionHandlerOptions()
+    {
+        AllowStatusCode404Response = true,
+        ExceptionHandlingPath = "/error-development"
+    });
 }
 else
 {

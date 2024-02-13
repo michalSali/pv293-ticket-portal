@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventManagement\EventManagement.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
     <ProjectReference Include="..\TicketBooking\TicketBooking.csproj" />
     <ProjectReference Include="..\UserManagement\UserManagement.csproj" />

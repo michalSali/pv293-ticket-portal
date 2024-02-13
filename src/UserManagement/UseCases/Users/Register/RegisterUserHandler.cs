@@ -13,7 +13,7 @@ using UserManagement.Infrastructure.Services.Mailer;
 
 namespace UserManagement.UseCases.Users.Register
 {
-    internal sealed class RegisterUserHandler : IRequestHandler<RegisterUserCommand, bool>
+    internal sealed class RegisterUserHandler : IRequestHandler<RegisterUserCommand, User?>
     {
         private readonly UserManagementDbContext _context;
         private readonly UserManager<User> _userManager;
@@ -26,11 +26,16 @@ namespace UserManagement.UseCases.Users.Register
             _mailerService = mailerService;
         }
 
-        public async Task<bool> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<User?> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = new User { UserName = request.Email, Email = request.Email };
 
             var result = await _userManager.CreateAsync(user, request.Password);
+
+            if (!result.Succeeded)
+            {
+                return null;
+            }
 
             user.DomainEvents.Add(new UserRegisteredEvent
             {
@@ -43,9 +48,7 @@ namespace UserManagement.UseCases.Users.Register
             await _mailerService.SendEmailAsync(user.Email, null, "Welcome to TicketPortal",
                 "Thank you for choosing TicketPortal. You can book tickets from events all around the world.");
 
-            // TODO: need to create Cart for this user
-
-            return result.Succeeded;
+            return user;
         }
     }
 }

@@ -28,8 +28,8 @@ public static class DependencyInjection
             typeof(AddTicketToCartCommand).Assembly
         ));
 
-        //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining()
-
+        // TODO: add validator for each project
+        //services.AddValidatorsFromAssemblies(Assembly.GetExecutingAssembly());
 
         services.AddSharedKernelServices(configuration);
         services.AddTicketBookingServices(configuration);
