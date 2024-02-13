@@ -16,6 +16,4 @@ public class Seat : AuditableEntity, IHasDomainEvent
     public SeatState State { get; set; }
 
     public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
-
-    public virtual SeatCategory Category { get; set; }
 }

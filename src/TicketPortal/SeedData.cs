@@ -17,13 +17,13 @@ namespace TicketPortal;
 /// </summary>
 public static class SeedData
 {
-    public static void Initialize(WebApplication app)
+    public static async Task InitializeAsync(WebApplication app)
     {
         using (var scope = app.Services.CreateScope())
         {
             // Seed data
-            TicketBookingDbContextSeed.Initialize(scope.ServiceProvider);
-            UserManagementDbContextSeed.Initialize(scope.ServiceProvider);
+            await TicketBookingDbContextSeed.Initialize(scope.ServiceProvider);
+            await UserManagementDbContextSeed.Initialize(scope.ServiceProvider);
         }
     }
 

@@ -20,14 +20,21 @@ namespace TicketBooking.UseCases.Events.Create
 
         public async Task<Event> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            var _event = await _context.Events
-                .Where(x => x.Id == request.EventId)
-                .FirstOrDefaultAsync();
-
-            if (_event == null)
+            // could be added to AutoMapper, but only used in one place
+            var _event = new Event
             {
-                throw new NotFoundException($"Event with id `{request.EventId}` not found");
-            }
+                Title = request.Title,
+                Description = request.Description,
+                Category = request.Category,
+                Start = request.Start,
+                End = request.End,
+                Location = request.Location,
+                Url = request.Url,
+                Fee = request.Fee,
+                HasUnlimitedCapacity = request.HasUnlimitedCapacity,
+                TotalCapacity = request.TotalCapacity,
+                RemainingCapacity = request.RemainingCapacity,
+            };
 
             return _event;
         }

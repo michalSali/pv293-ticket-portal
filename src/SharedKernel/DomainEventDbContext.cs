@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -12,6 +14,8 @@ public class DomainEventDbContext<T> : DbContext where T : DbContext
 {
     private readonly ICurrentUserService _currentUserService;
     private readonly IDomainEventService _domainEventService;
+
+    public DbSet<DomainEventLog> EventLogs { get; set; }
 
     public DomainEventDbContext(
         DbContextOptions<T> options,
@@ -48,12 +52,39 @@ public class DomainEventDbContext<T> : DbContext where T : DbContext
         }
 
         var events = ChangeTracker.Entries<IHasDomainEvent>()
-                .Select(x => x.Entity.DomainEvents)
-                .SelectMany(x => x)
-                .Where(domainEvent => !domainEvent.IsPublished)
-                .ToArray();
+            .Select(x => x.Entity.DomainEvents)
+            //.Select(x => x != null)
+            .SelectMany(x => x == null ? new List<DomainEvent>() : x)
+            .Where(domainEvent => !domainEvent.IsPublished)
+            .ToArray();
+
+        var entitiesWithEvents = ChangeTracker.Entries<IHasDomainEvent>()
+            .Select(x => x.Entity)
+            .Where(x => x.DomainEvents.Any(domainEvent => !domainEvent.IsPublished))
+            .ToArray();
+
+        foreach (var entity in entitiesWithEvents)
+        {
+            foreach (var entry in entity.DomainEvents.Where(x => !x.IsPublished))
+            {
+                // StreamVersion is auto-increment
+                EventLogs.Add(new DomainEventLog
+                {
+                    StreamId = entity.GetType().Name.ToString(), // entity name
+                    StreamVersion = 1,  // should be auto-increment
+                    EventType = entry.GetType().Name,
+                    EventData = JsonSerializer.Serialize(entry),
+                    Timestamp = DateTime.UtcNow,
+                });
+            }
+        }
+
+        var eventLogs = await EventLogs.ToListAsync();
 
         var result = await base.SaveChangesAsync(cancellationToken);
+
+        eventLogs = await EventLogs.ToListAsync();
+
 
         await DispatchEvents(events);
 

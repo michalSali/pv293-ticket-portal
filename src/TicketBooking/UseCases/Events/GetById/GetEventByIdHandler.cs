@@ -29,6 +29,12 @@ namespace TicketBooking.UseCases.Events.GetById
                 throw new NotFoundException($"Event with id `{request.EventId}` not found");
             }
 
+            var eventSeats = await _context.Seats
+                .Where(x => x.EventId == request.EventId)
+                .ToListAsync();
+
+            _event.Seats = eventSeats;
+
             return _event;
         }
     }

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Interfaces;
 using SharedKernel.Models;
@@ -10,6 +10,7 @@ public class DomainEventService : IDomainEventService
 {
     private readonly ILogger<DomainEventService> _logger;
     private readonly IPublisher _mediator;
+    //private readonly DomainEventDbContext<DbContext> _context;
 
     public DomainEventService(ILogger<DomainEventService> logger, IPublisher mediator)
     {

@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SharedKernel;
 
 public interface IHasDomainEvent
 {
-    [NotMapped]
+    //[NotMapped]
+    //[JsonIgnore]
     public List<DomainEvent> DomainEvents { get; }
 }
 

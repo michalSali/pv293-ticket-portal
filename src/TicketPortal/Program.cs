@@ -30,7 +30,7 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-SeedData.Initialize(app);
+await SeedData.InitializeAsync(app);
 
 // Enable middleware to serve generated Swagger as a JSON endpoint.
 app.UseSwagger();

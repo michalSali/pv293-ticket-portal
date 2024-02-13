@@ -8,7 +8,7 @@ using SharedKernel.Interfaces;
 using TicketBooking.Infrastructure.Data;
 using TicketBooking.Core.CartAggregate;
 
-namespace CartManagement.UseCases.Carts.LogOut
+namespace TicketBooking.UseCases.Carts.Get
 {
     internal sealed class GetAllCartsHandler : IRequestHandler<GetAllCartsQuery, List<Cart>>
     {

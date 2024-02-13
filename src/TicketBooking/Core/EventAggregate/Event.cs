@@ -1,4 +1,5 @@
 ﻿using SharedKernel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace TicketBooking.Core.EventAggregate;
@@ -26,5 +27,6 @@ public class Event : AuditableEntity, IHasDomainEvent
     [JsonIgnore]
     public virtual bool SeatMustBeSpecified => Seats != null && Seats.Any();
 
-    public List<DomainEvent> DomainEvents { get; set; }
+    [NotMapped]
+    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

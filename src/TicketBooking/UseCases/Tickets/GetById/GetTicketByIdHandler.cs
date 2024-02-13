@@ -6,18 +6,18 @@ using SharedKernel.Interfaces;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Infrastructure.Data;
 
-namespace TicketBooking.UseCases.Tickets.Get
+namespace TicketBooking.UseCases.Tickets.GetById
 {
-    internal sealed class GetTicketHandler : IRequestHandler<GetTicketQuery, Ticket>
+    internal sealed class GetTicketByIdHandler : IRequestHandler<GetTicketByIdQuery, Ticket>
     {
         private readonly TicketBookingDbContext _context;
 
-        public GetTicketHandler(TicketBookingDbContext context)
+        public GetTicketByIdHandler(TicketBookingDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Ticket> Handle(GetTicketQuery request, CancellationToken cancellationToken)
+        public async Task<Ticket> Handle(GetTicketByIdQuery request, CancellationToken cancellationToken)
         {
             var ticket = await _context.Tickets
                 .Where(x => x.Id == request.TicketId)

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TicketBooking.Core.CartAggregate;
 
-namespace CartManagement.UseCases.Carts.LogOut
+namespace TicketBooking.UseCases.Carts.Get
 {
     public class GetAllCartsQuery : IRequest<List<Cart>>
     {

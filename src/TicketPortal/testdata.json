@@ -5,17 +5,75 @@
         "email": "pv293_ticketportal_1@mailinator.com",
         "password": "password"
       }
-      ,
+    ],
+    "sign-in-user": [
       {
         "email": "pv293_ticketportal_1@mailinator.com",
         "password": "password",
         "rememberMe": true
-      }
-      ,
+      },
       {
         "email": "485342_user1@mailinator.com",
         "password": "Heslo.1",
         "rememberMe": true
+      }
+    ],
+    "create-event": [
+      {
+        "title": "ABC Concert",
+        "description": "Concert of the group ABC",
+        "category": 1,
+        "start": "2024-03-05",
+        "location": "Brno, Street 13/37",
+        "url": "www.google.com",
+        "hasUnlimitedCapacity": false,
+        "totalCapacity": 5
+      }
+    ],
+    "create-seat-category": [
+      {
+        "eventId": 1,
+        "name": "Tier1",
+        "price": 119
+      },
+      {
+        "eventId": 1,
+        "name": "Tier2",
+        "price": 99
+      }
+    ],
+    "create-seat-layout": [
+      {
+        "SectorCode": "C",
+        "RowNumber": 1,
+        "SeatNumber": 1,
+        "CategoryId": 1,
+        "EventId": 1,
+        "State": 1
+      },
+      {
+        "SectorCode": "C",
+        "RowNumber": 1,
+        "SeatNumber": 2,
+        "CategoryId": 1,
+        "EventId": 1,
+        "State": 1
+      },
+      {
+        "SectorCode": "C",
+        "RowNumber": 1,
+        "SeatNumber": 3,
+        "CategoryId": 1,
+        "EventId": 1,
+        "State": 1
+      },
+      {
+        "SectorCode": "B3",
+        "RowNumber": 2,
+        "SeatNumber": 3,
+        "CategoryId": 2,
+        "EventId": 1,
+        "State": 1
       }
     ]
   }

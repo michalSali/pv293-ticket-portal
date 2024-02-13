@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using TicketBooking.Core.CartAggregate;
 using TicketBooking.Core.EventAggregate;
 using TicketBooking.UseCases.Events.Create;
+using TicketBooking.UseCases.Events.CreateSeatCategory;
+using TicketBooking.UseCases.Events.CreateSeatLayout;
 using TicketBooking.UseCases.Events.Get;
 using TicketBooking.UseCases.Events.GetById;
 
@@ -31,6 +33,20 @@ namespace TicketBooking.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> CreateEvent(CreateEventCommand command)
         {
+            return await Mediator.Send(command);
+        }
+
+        [HttpPost("{id}/seat-layout")]
+        public async Task<ActionResult<List<Seat>>> CreateEventSeatLayout(int id, CreateSeatLayoutCommand command)
+        {
+            command.EventId = id;
+            return await Mediator.Send(command);
+        }
+
+        [HttpPost("{id}/seat-category")]
+        public async Task<ActionResult<SeatCategory>> CreateEventSeatCategories(int id, CreateSeatCategoryCommand command)
+        {
+            command.EventId = id;
             return await Mediator.Send(command);
         }
     }

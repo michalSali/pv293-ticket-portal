@@ -20,7 +20,7 @@ public static class UserManagementDbContextSeed
     /// Data seeding is performed before the main application logic begins execution.
     /// </summary>
     /// <param name="serviceProvider">Services</param>
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static async Task Initialize(IServiceProvider serviceProvider)
     {
         var context = serviceProvider.GetRequiredService<UserManagementDbContext>();
         //context.Database.EnsureCreated();
@@ -63,10 +63,10 @@ public static class UserManagementDbContextSeed
 
             foreach (var user in users)
             {
-                user.DomainEvents.Add(new UserRegisteredEvent() { UserId = user.Id, Email = user.Id });
+                user.DomainEvents.Add(new UserRegisteredEvent() { UserId = user.Id, Email = user.Email });
             }
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         if (!context.Roles.Any())
@@ -75,7 +75,7 @@ public static class UserManagementDbContextSeed
             context.Roles.Add(entity: new IdentityRole() { Id = 2.ToString(), Name = "User", NormalizedName = "USER" });
             context.Roles.Add(entity: new IdentityRole() { Id = 1.ToString(), Name = "Admin", NormalizedName = "ADMIN" });
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         if (!context.UserRoles.Any())
@@ -85,7 +85,7 @@ public static class UserManagementDbContextSeed
             context.UserRoles.Add(entity: new IdentityUserRole<string>() { UserId = userID2, RoleId = 2.ToString() });
             context.UserRoles.Add(entity: new IdentityUserRole<string>() { UserId = userID1, RoleId = 1.ToString() });
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
         if (!context.RoleClaims.Any())
@@ -108,7 +108,7 @@ public static class UserManagementDbContextSeed
             context.RoleClaims.Add(entity: new IdentityRoleClaim<string>() { RoleId = 1.ToString(), ClaimType = "permission", ClaimValue = "Webhostings.Create" });
             context.RoleClaims.Add(entity: new IdentityRoleClaim<string>() { RoleId = 1.ToString(), ClaimType = "permission", ClaimValue = "Webhostings.View" });
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
  }

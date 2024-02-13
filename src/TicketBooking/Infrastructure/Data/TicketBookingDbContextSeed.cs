@@ -11,7 +11,7 @@ public static class TicketBookingDbContextSeed
     /// Data seeding is performed before the main application logic begins execution.
     /// </summary>
     /// <param name="serviceProvider">Services</param>
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static async Task Initialize(IServiceProvider serviceProvider)
     {
         var context = serviceProvider.GetRequiredService<TicketBookingDbContext>();
         //context.Database.EnsureCreated();
@@ -72,7 +72,7 @@ public static class TicketBookingDbContextSeed
 
         context.SeatCategories.AddRange(seatCategories);
 
-        var seat_1 = new Seat { SectorCode = "A", RowNumber = 1, SeatNumber = 1, CategoryId = seatCategory_11.Id,  EventId = event_1.Id, State = SeatState.Available };
+        var seat_1 = new Seat { SectorCode = "A", RowNumber = 1, SeatNumber = 1, CategoryId = seatCategory_11.Id, EventId = event_1.Id, State = SeatState.Available };
         var seat_2 = new Seat { SectorCode = "A", RowNumber = 1, SeatNumber = 2, CategoryId = seatCategory_11.Id, EventId = event_1.Id, State = SeatState.Available };
         var seat_3 = new Seat { SectorCode = "A", RowNumber = 1, SeatNumber = 3, CategoryId = seatCategory_11.Id, EventId = event_1.Id, State = SeatState.Available };
         var seat_4 = new Seat { SectorCode = "B1", RowNumber = 2, SeatNumber = 1, CategoryId = seatCategory_12.Id, EventId = event_1.Id, State = SeatState.Available };
@@ -81,21 +81,6 @@ public static class TicketBookingDbContextSeed
         
         context.Seats.AddRange(new List<Seat> { seat_1, seat_2, seat_3, seat_4, seat_5, seat_6 });
 
-        context.SaveChanges();
-    }
-
-    public static async Task SeedSampleDataAsync(TicketBookingDbContext context)
-    {
-        // Seed, if necessary
-        if (!context.Carts.Any())
-        {
-            // create carts (set user ids)
-            context.Carts.Add(new Cart
-            {
-                
-            });
-
-            await context.SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }
